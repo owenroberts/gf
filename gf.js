@@ -10,12 +10,9 @@ var drawTime = performance.now();
 const lineInterval = 1000/10;
 const mixedColors = true;
 
-let title;
-let titleFrames = 120;
-let title_button;
-let girlf, boyf;
 let stomach;
 let landing;
+let sky;
 
 const 	wrenSound = 		 new Audio("clips/Wren.mp3"),
 		nightjarSound = 	 new Audio("clips/Nightjar.mp3"),
@@ -26,119 +23,346 @@ const 	wrenSound = 		 new Audio("clips/Wren.mp3"),
 const wrenSource = audioCtx.createMediaElementSource(wrenSound);
 // wrenSound.play();
 // nightjarSound.play();
-sunSound.play();
-moonSound.play();
+// sunSound.play();
+// moonSound.play();
 wrenSource.connect(panNode);
 panNode.connect(audioCtx.destination);
 
-let speechBubbles = [
+/*
+scenes
+0: title 
+1: first bubble
+2: stomach hurts
+3: breakfast
+joining two?
+*/
+let currentScene = 9;
+
+/* figure out scenes structure later */
+let scenes = [
+/* title scene */
 	{
-		file: "frames/bubble-0.json",
-		clip: new Audio("clips/weird.mp3"),
-		x: 450,
-		y: 250,
-		scene: 1,
-		start: function(bub) {
-			//bub.sprite.animation.start();
-			bub.sprite.animation.play = true;
-		},
-		end: function(bub) {
-			setTimeout(function() {
-				bub.sprite.animation.play = false;
-				scene = 2;
-				wrenSound.pause();
-				nightjarSound.pause();
-				setTimeout(function() {
-					speechBubbles[1].clip.play();
-				}, 1000);
-			}, 1000);
+		sprites: [
+			{
+				file: "frames/sun_and_moon_updown.json",
+			}
+		],
+		frames: 60,
+		end: function() {
+			currentScene = 1;
 		}
 	},
+/* first scene, wren and nj */
 	{
-		file: "frames/bubble-1.json",
-		clip: new Audio("clips/stomach.mp3"),
-		x: 500,
-		y: 20,
-		scene: 2,
-		start: function(bub) {
-			bub.sprite.animation.play = true;
-		},
-		end: function(bub) {
-			bub.sprite.animation.play = false;
-			setTimeout(function() {
-				speechBubbles[2].clip.play();
-			}, 1000);
-		}
+		sprites: [
+			{
+				file: "frames/girlf.json"
+
+			},
+			{
+				file: "frames/boyf.json"
+			}
+		],
+		speech: [
+			{
+				file: "frames/bubble-0.json",
+				clip: new Audio("clips/weird.mp3"),
+				x: 450,
+				y: 250,
+				delay: 2000,
+				nextScene: 2,
+				nextDelay: 1000
+			}
+		]
 	},
+/* second scene  */
 	{
-		file: "frames/bubble-2.json",
-		clip: new Audio("clips/seeds.mp3"),
-		x: 200,
-		y: 140,
-		scene: 2,
-		start: function(bub) {
-			bub.sprite.animation.play = true;
-		},
-		end: function(bub) {
-			bub.sprite.animation.play = false;
-			setTimeout(function() {
-				scene = 3;
-				setTimeout(function() {
-					speechBubbles[3].clip.play();
-				}, 1000);
-			}, 500);
-		}
+		sprites: [
+			{
+				file: "frames/flying.json"
+			}
+		],
+		speech: [
+			{
+				file: "frames/bubble-1.json",
+				clip: new Audio("clips/stomach.mp3"),
+				x: 500,
+				y: 20,
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-2.json",
+				clip: new Audio("clips/like_seeds.mp3"),
+				x: 200,
+				y: 140,
+				delay: 5000,
+				nextScene: 3,
+				nextDelay: 500
+			}
+		]
 	},
+/*  third scene */
 	{
-		file: "frames/bubble-3.json",
-		clip: new Audio("clips/nectar.mp3"),
-		x: 350,
-		y: 120,
-		scene: 3,
-		start: function(bub) {
-			bub.sprite.animation.play = true;
-		},
-		end: function(bub) {
-			bub.sprite.animation.play = false;
-			setTimeout(function() {
-				speechBubbles[4].clip.play();
-			}, 1000);
-		}
+		sprites: [
+			{
+				file: "frames/landing.json"
+			}
+		],
+		speech: [
+			{
+				file: "frames/bubble-3.json",
+				clip: new Audio("clips/nectar.mp3"),
+				x: 350,
+				y: 120,
+				delay: 2000,
+			},
+			{
+				file: "frames/bubble-4.json",
+				clip: new Audio("clips/breakfast.mp3"),
+				x: 700,
+				y: 340,
+				delay: 7000,
+				nextScene: 4,
+				nextDelay: 1000
+			}
+		]
 	},
+/* fourth scene */
 	{
-		file: "frames/bubble-4.json",
-		clip: new Audio("clips/breakfast.mp3"),
-		x: 700,
-		y: 340,
-		scene: 3,
-		start: function(bub) {
-			bub.sprite.animation.play = true;
+		sprites: [
+			{ file: "frames/sky.json" },
+			{ 
+				file: "frames/moon_bkg.json",
+				bkg: true,
+			},
+			{ 
+				file: "frames/moon_bkg_2.json",
+				bkg: true,
+			},
+			{ 
+				file: "frames/moon.json",
+			}
+		],
+		speech: [
+			{
+				file: "frames/bubble-5.json",
+				clip: new Audio("clips/so_tired.mp3"),
+				x: 400,
+				y: 220,
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-6.json",
+				clip: new Audio("clips/said_moon.mp3"),
+				x: 150,
+				y: 320,
+				delay: 8000,
+			},
+			{
+				file: "frames/bubble-5.json",
+				clip: new Audio("clips/eyes_open.mp3"),
+				x: 400,
+				y: 220,
+				delay: 12000,
+			},
+			{
+				file: "frames/bubble-6.json",
+				clip: new Audio("clips/maybe_late.mp3"),
+				x: 150,
+				y: 320,
+				delay: 16000,
+				nextScene: 5,
+				nextDelay: 1000
+			}
+		]
+	},
+/* fifth scene */
+	{
+		sprites: [
+			{ file: "frames/brain.json" }
+		],
+		speech: [
+			{
+				file: "frames/bubble-7.json",
+				clip: new Audio("clips/kill_brain.mp3"),
+				x: 380,
+				y: 250,
+				delay: 1000
+
+			},
+			{
+				file: "frames/bubble-8.json",
+				clip: new Audio("clips/dont_think_so.mp3"),
+				x: 820,
+				y: 400,
+				delay: 8000,
+				nextScene: 6,
+				nextDelay: 3000
+			}
+		],
+		bgImg: "imgs/sky.jpg"
+	},
+/* sixth scene */
+	{
+		sprites: [
+			{ file: "frames/puke_last.json"}
+		],
+		speech: [
+			{
+				file: "frames/bubble-9.json",
+				clip: new Audio("clips/puked_last.mp3"),
+				x: 300,
+				y: 200,
+				delay: 1000
+			},
+			{
+				file: "frames/bubble-10.json",
+				clip: new Audio("clips/what_mean.mp3"),
+				x: 400,
+				y: 400,
+				delay: 6000,
+				nextScene: 7,
+				nextDelay: 500
+			}
+		],
+		bgImg: "imgs/prints.jpg"
+	},
+/* seventh scene */
+	{
+		hasSetup: true,
+		setup: function() {
+			canvas.style.backgroundColor = "black";
 		},
-		end: function(bub) {
-			bub.sprite.animation.play = false;
-			setTimeout(function() {
-				scene = 4;
-			}, 500);
-		}
+		sprites: [
+			{ 
+				file: "frames/puking_bkg.json",
+				bkg: true,
+			},
+			{ 
+				file: "frames/puking.json",
+			}
+		],
+		speech: [
+			{
+				clip: new Audio("clips/up_late.mp3"),
+				delay: 1000,
+			},
+			{
+				clip: new Audio("clips/she_eat.mp3"),
+				delay: 8000,
+			},
+			{
+				clip: new Audio("clips/solid_food.mp3"),
+				delay: 12000,
+				nextScene: 8,
+				nextDelay: 1000
+			}
+		]
+	},
+/* eight scene */
+	{
+		hasSetup: true,
+		setup: function() {
+			canvas.style.backgroundColor = "white";
+		},
+		sprites: [
+			{ file: "frames/pooping.json" },
+			{ file: "frames/clouds.json"}
+		],
+		speech: [
+			{
+				file: "frames/bubble-12.json",
+				x: 450,
+				y: 300,
+				clip: new Audio("clips/dinner_for_you.mp3"),
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-11.json",
+				x: 850,
+				y: 60,
+				clip: new Audio("clips/guess_so.mp3"),
+				delay: 4000,
+			},
+			{
+				file: "frames/bubble-12.json",
+				x: 450,
+				y: 300,
+				clip: new Audio("clips/you_puked.mp3"),
+				delay: 9000,
+			},
+			{
+				file: "frames/bubble-11.json",
+				x: 850,
+				y: 60,
+				clip: new Audio("clips/poop_trees.mp3"),
+				delay: 10000,
+			},
+			{
+				file: "frames/bubble-12.json",
+				x: 450,
+				y: 300,
+				clip: new Audio("clips/pooping_now.mp3"),
+				delay: 27000,
+				nextScene: 9,
+				nextDelay: 1000
+			}
+		]
+	},
+/* ninth scene */
+	{
+		bgImg: "imgs/stump.jpg",
+		sprites: [
+			{ file: "frames/stump.json"}
+		],
+		speech: [
+			{
+				file: "frames/bubble-14.json",
+				x: 750,
+				y: 250,
+				clip: new Audio("clips/idk.mp3"),
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-13.json",
+				x: 770,
+				y: 200,
+				clip: new Audio("clips/she_cool.mp3"),
+				delay: 4000,
+			},
+			{
+				file: "frames/bubble-14.json",
+				x: 750,
+				y: 250,
+				clip: new Audio("clips/really_cool.mp3"),
+				delay: 6000,
+			},
+			{
+				file: "frames/bubble-13.json",
+				x: 770,
+				y: 200,
+				clip: new Audio("clips/awake.mp3"),
+				delay: 10000,
+			},{
+				file: "frames/bubble-14.json",
+				x: 750,
+				y: 250,
+				clip: new Audio("clips/yeah.mp3"),
+				delay: 14000,
+			},
+			{
+				file: "frames/bubble-13.json",
+				x: 770,
+				y: 200,
+				clip: new Audio("clips/crazy.mp3"),
+				delay: 16000,
+				nextScene: 10,
+				nextDelay: 1000
+			}
+		]
 	}
 ];
 
-for (let i = 0; i < speechBubbles.length; i++) {
-	const w = speechBubbles[i];
-	w.sprite = new Sprite(w.x, w.y);
-	w.sprite.addAnimation(w.file, true);
-	w.sprite.animation.play = false;
-	if (speechBubbles[i].start) {
-		speechBubbles[i].clip.addEventListener("play", function() {
-			speechBubbles[i].start(speechBubbles[i]);
-		});
-	}
-	if (speechBubbles[i].end) {
-		speechBubbles[i].clip.addEventListener("ended", function() {
-			speechBubbles[i].end(speechBubbles[i]);
-		});
-	}
-}
 
 /* sprite w no w or h should be equivalent to natural, right? */
 // const cursor = new Sprite(0, 0);
@@ -148,54 +372,47 @@ for (let i = 0; i < speechBubbles.length; i++) {
 let mouseOver = false;
 // canvas.style.cursor = "none";
 
-
-/*
-scenes
-0: title 
-1: first bubble
-2: stomach hurts
-3: breakfast
-
-joining two?
-*/
-let scene = 0;
-
-/* figure out scenes structure later */
-let scenes = [
-	{
-		sprites: [
-			{
-				file: "sun_and_moon_updown.json"
-			}
-		]
-
-	}
-];
-
-
 function start() {
-	// width = window.innerWidth;
-	// height = window.innerHeight;
 	canvas.width = width;
 	canvas.height = height;
 
-	title = new Sprite(0, 0, width, height);
-	title.addAnimation("frames/sun_and_moon_updown.json");
+	scenes.forEach(function(scene) {
+		scene.sprites.forEach(function(sprite) {
+			if (sprite.x == undefined) sprite.sprite = new Sprite(0, 0, width, height);
+			else sprite.sprite = new Sprite(sprite.x, sprite.y, sprite.w, sprite.h);
+			if (sprite.debug) sprite.sprite.debug = true;
+			if (sprite.bkg) sprite.sprite.bkg = true;
+			if (sprite.file) sprite.sprite.addAnimation(sprite.file);
+		});
+		if (scene.speech) {
+			scene.speech.forEach(function(speech) {
+				speech.played = false;
+				speech.sprite = new Sprite(speech.x, speech.y);
+				if (speech.debug) speech.sprite.debug = true;
+				speech.sprite.addAnimation(speech.file);
+				speech.sprite.animation.play = false;
+				speech.clip.addEventListener("play", speech.sprite.animation.start);
+				speech.clip.addEventListener("ended", speech.sprite.animation.stop);
+				if (speech.nextScene != undefined) {
+					speech.clip.addEventListener("ended", function() {
+						setTimeout(function() {
+							currentScene = speech.nextScene;
+						}, speech.nextDelay);
+					});
+				}
+			});
+		}
+		if (scene.bgImg) {
+			scene.image = new Image();
+			scene.image.src = scene.bgImg;
+		}
+	});
 	
 	// title_button = new Sprite(width * 0.8, height * 0.7);
 	// title_button.addAnimation("frames/title_button.json", true);
 
-	girlf = new Sprite(0, 0, width, height);
-	girlf.addAnimation("frames/girlf.json");
-
-	boyf = new Sprite(0, 0, width, height);
-	boyf.addAnimation("frames/boyf.json");
-
-	stomach = new Sprite(0, 0, width, height);
-	stomach.addAnimation("frames/flying.json");
-
-	landing = new Sprite(0, 0, width, height);
-	landing.addAnimation("frames/landing.json");
+	sky = new Sprite(0,0,width,height);
+	sky.addAnimation("frames/sky.json");
 
 	requestAnimFrame(update);
 	requestAnimFrame(draw);
@@ -207,56 +424,44 @@ function draw() {
 		ctx.clearRect(0, 0, width, height);
 		// if (mouseOver) cursor_over.display();
 		// else cursor.display();
-		if (scene == 0) {
-			title.display();
-			titleFrames--;
-			if (titleFrames <= 0) {
-				scene = 1;
-				moonSound.pause();
-				moonSound.currentTime = 0;
-				sunSound.pause();
-				sunSound.currentTime = 0;
-				wrenSound.play();
-				nightjarSound.play();
-				setTimeout(function() {
-					speechBubbles[0].clip.play();
-				}, 2000);
-			}
-			//title_button.display();
-		} else if (scene == 1) {
-			girlf.display();
-			boyf.display();
-			speechBubbles[0].sprite.display();
-		} else if (scene == 2) {
-			stomach.display();
-			speechBubbles[1].sprite.display();
-			speechBubbles[2].sprite.display();
-		} else if (scene == 3) {
-			landing.display();
-			speechBubbles[3].sprite.display();
-			speechBubbles[4].sprite.display();
+
+		if (scenes[currentScene].hasSetup) {
+			scenes[currentScene].setup();
+			scenes[currentScene].hasSetup = false;
 		}
+
+		if (scenes[currentScene].image) {
+			ctx.drawImage(scenes[currentScene].image,0,0);
+		}
+
+		scenes[currentScene].sprites.forEach(function(sprite) {
+			sprite.sprite.display();
+		});
+		if (scenes[currentScene].speech) {
+			scenes[currentScene].speech.forEach(function(speech){
+				speech.sprite.display();
+				if (speech.delay && !speech.played) {
+					speech.played = true;
+					setTimeout(function() {
+						speech.clip.play();
+					}, speech.delay);
+				}
+			});
+		}
+		if (scenes[currentScene].frames) {
+			scenes[currentScene].frames--;
+			if (scenes[currentScene].frames <= 0) {
+				scenes[currentScene].end();
+			}
+		}
+
 		
 	}
 	requestAnimFrame(draw);
 }
 
 function update() {
-	if (scene == 0) {
-		//title_button.update();
-	}
-	if (scene == 1) {
-		speechBubbles[0].sprite.update();
-	}
-	if (scene == 2) {
-		speechBubbles[1].sprite.update();
-		speechBubbles[2].sprite.update();
-	}
-	if (scene == 3) {
-		speechBubbles[3].sprite.update();
-		speechBubbles[4].sprite.update();
-	}
-	requestAnimFrame(update);
+	// requestAnimFrame(update);
 }
 
 if (canvas.getContext) {
@@ -293,27 +498,6 @@ window.addEventListener('resize', sizeCanvas, false);
 
 function mouseClicked(x,y) {
 
-	if (scene == 0) {
-		// if (title_button.tap(x,y)) {
-		// 	scene = 1;
-		// 	moonSound.pause();
-		// 	moonSound.currentTime = 0;
-		// 	sunSound.pause();
-		// 	sunSound.currentTime = 0;
-		// 	wrenSound.play();
-		// 	nightjarSound.play();
-		// }
-	}
-
-	for (let i = 0; i < speechBubbles.length; i++) {
-		if (speechBubbles[i].sprite.tap(x,y)) {
-			if (scene == speechBubbles[i].scene) {
-				speechBubbles[i].clip.play();
-				if (speechBubbles[i].callback)
-					speechBubbles[i].clip.addEventListener("ended", speechBubbles[i].callback);
-			}
-		}
-	}
 }
 
 let bkgColor = 255;
@@ -321,17 +505,16 @@ let change = -5;
 let bgInterval = 3;
 
 function mouseMoved(x, y) {
-
 	/* sprite hovers */
 	let hover = false;
 	// if (scene == 0 && title_button.tap(x,y)) {
 	// 	hover = true;
 	// }
-	for (let i = 0; i < speechBubbles.length; i++) {
-		if (speechBubbles[i].sprite.tap(x,y) && scene == speechBubbles[i].scene) {
-			hover = true;
-		}
-	}
+	// for (let i = 0; i < speechBubbles.length; i++) {
+	// 	if (speechBubbles[i].sprite.tap(x,y) && scene == speechBubbles[i].scene) {
+	// 		hover = true;
+	// 	}
+	// }
 
 	if (hover) {
 		if (!mouseOver) mouseOver = true;
@@ -350,9 +533,27 @@ function mouseMoved(x, y) {
 	}
 	
 	/* background changing */
-	bkgColor = Math.floor(map(y, 0, height, bgInterval+1, 0));
-	const bg = Math.floor( bkgColor * (255/bgInterval));
-	canvas.style.backgroundColor = "rgb("+bg+","+bg+","+bg+")";
+	
+	/* black and white */
+	if (currentScene <= 3) {
+		if (y < height * 0.8) {
+			if (canvas.style.backgroundColor != "white") {
+				canvas.style.backgroundColor = "white";
+			}
+		} else {
+			if (canvas.style.backgroundColor != "black") {
+				canvas.style.backgroundColor = "black";
+			}
+		}
+	} else if (currentScene == 4) {
+		let j = Math.floor(map(y,0,height,0,10));
+		scenes[currentScene].sprites[0].sprite.animation.jiggle = j;
+	}
+
+	// let j = Math.floor(map(y,0,height,1,10));
+	// sky.animation.jiggle = j;
+
+	
 	
 	//bkgColor += change;
 	//if (bkgColor < -255/2 || bkgColor > 255 * 1.5) change *= -1; 
