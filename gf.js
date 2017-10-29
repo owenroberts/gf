@@ -36,7 +36,7 @@ scenes
 3: breakfast
 joining two?
 */
-let currentScene = 9;
+let currentScene = 0;
 
 /* figure out scenes structure later */
 let scenes = [
@@ -360,7 +360,258 @@ let scenes = [
 				nextDelay: 1000
 			}
 		]
-	}
+	},
+/* tenth scene */
+	{
+		hasSetup: true,
+		setup: function() {
+			canvas.style.backgroundColor = "black";
+		},
+		sprites: [
+			{ file: "frames/yesterday_bkg.json", bkg:true },
+			{ file: "frames/yesterday.json" }
+		],
+		speech: [
+			{
+				file: "frames/bubble-16.json",
+				clip: new Audio("clips/yesterday.mp3"),
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-15.json",
+				clip: new Audio("clips/yesterday_ate_stuff.mp3"),
+				delay: 4000,
+			},
+			{
+				file: "frames/bubble-16.json",
+				clip: new Audio("clips/yesterday_eat.mp3"),
+				delay: 9000,
+			},
+			{
+				file: "frames/bubble-15.json",
+				clip: new Audio("clips/yesterday_usual.mp3"),
+				delay: 12000,
+			},
+			{
+				file: "frames/bubble-16.json",
+				clip: new Audio("clips/yesterday_stuff.mp3"),
+				delay: 15000,
+			},
+			{
+				file: "frames/bubble-15.json",
+				clip: new Audio("clips/yesterday_not_really.mp3"),
+				delay: 20000,
+			},
+			{
+				file: "frames/bubble-16.json",
+				clip: new Audio("clips/yesterday_sleep.mp3"),
+				delay: 24000,
+			},
+			{
+				file: "frames/bubble-15.json",
+				clip: new Audio("clips/yesterday_nah.mp3"),
+				delay: 29000,
+				nextScene: 11,
+				nextDelay: 1000
+			}
+		]
+	},
+/* eleven */
+	{
+		hasSetup: true,
+		setup: function() {
+			canvas.style.backgroundColor = "white";
+		},
+		sprites: [
+			{ file: "frames/not_sure.json" },
+			{ file: "frames/not_sure_wind.json" }
+		],
+		speech: [
+			{
+				file: "frames/bubble-18.json",
+				clip: new Audio("clips/someone_pooped.mp3"),
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-17.json",
+				clip: new Audio("clips/not_sure.mp3"),
+				delay: 8000,
+				nextScene: 12,
+				nextDelay: 1000
+			}
+		]
+	},
+/* twelve */
+	{
+		sprites: [
+			{ file: "frames/blueberry.json" }
+		],
+		speech: [
+			{
+				file: "frames/bubble-20.json",
+				clip: new Audio("clips/blueberry.mp3"),
+				delay: 1000,
+			},
+			{
+				file: "frames/bubble-19.json",
+				clip: new Audio("clips/wake_me_up.mp3"),
+				delay: 16000,
+			},
+			{
+				file: "frames/bubble-20.json",
+				clip: new Audio("clips/sure.mp3"),
+				delay: 26000,
+				nextScene: 13,
+				nextDelay: 1000
+			}
+		]
+	},
+/* thirteen */
+	{
+		sprites: [
+			{ file: "frames/brain_2_bkg.json", bkg:true },
+			{ file: "frames/brain_2.json"},
+			{ file: "frames/brain_2_lines.json", loop: false}
+		],
+		speech: [
+			{
+				file: "frames/bubble-21.json",
+				clip: new Audio("clips/brain_2.mp3"),
+				delay: 3000,
+			},
+			{
+				file: "frames/bubble-22.json",
+				clip: new Audio("clips/sure_sometimes.mp3"),
+				delay: 7000,
+			},
+			{
+				file: "frames/bubble-21.json",
+				clip: new Audio("clips/not_possible.mp3"),
+				delay: 10000,
+				nextScene: 14,
+				nextDelay: 2500
+			}
+		]
+	},
+/* fourteen */
+	{
+		sprites: [
+			{ file: "frames/while_sleeping_bkg.json", bkg:true },
+			{ file: "frames/while_sleeping.json"},
+			{ file: "frames/sky_anim.json", loop: false}
+		],
+		speech: [
+			{
+				file: "frames/bubble-23.json",
+				x: 50,
+				y: 0,
+				clip: new Audio("clips/while_sleeping.mp3"),
+				delay: 3000,
+			},
+			{
+				file: "frames/bubble-24.json",
+				x: -10,
+				y: 20,
+				clip: new Audio("clips/same_usual.mp3"),
+				delay: 7000,
+			},
+			{
+				file: "frames/bubble-23.json",
+				x: 50,
+				y: 0,
+				clip: new Audio("clips/sounds_nice.mp3"),
+				delay: 12000,
+				nextScene: 15,
+				nextDelay: 5000
+			}
+		]
+	},
+/* fifteen */
+	{
+		hasSetup: true,
+		setup: function() {
+			canvas.style.backgroundColor = "black";
+		},
+		sprites: [
+			{ file: "frames/tomorrow_bkg.json", bkg: true },
+			{ file: "frames/tomorrow.json"}
+		],
+		speech: [
+			{
+				file: "frames/bubble-26.json",
+				clip: new Audio("clips/tomorrow.mp3"),
+				delay:1000
+			},
+			{
+				file: "frames/bubble-25.json",
+				clip: new Audio("clips/your_day.mp3"),
+				delay: 6000
+			},
+			{
+				file: "frames/bubble-26.json",
+				clip: new Audio("clips/my_morning.mp3"),
+				delay:10000
+			},
+			{
+				file: "frames/bubble-25.json",
+				clip: new Audio("clips/nah.mp3"),
+				delay: 14000
+			},
+			{
+				file: "frames/bubble-26.json",
+				clip: new Audio("clips/see_you.mp3"),
+				delay:17000
+			},
+			{
+				file: "frames/bubble-25.json",
+				clip: new Audio("clips/hurts.mp3"),
+				delay: 20000
+			},
+			{
+				file: "frames/bubble-26.json",
+				clip: new Audio("clips/cant_see.mp3"),
+				delay: 22000,
+				nextScene: 16,
+				nextDelay: 1000
+			}
+
+		]
+	},
+/* sixteen */
+	{
+		hasSetup: true,
+		setup: function() {
+			canvas.style.backgroundColor = "white";
+		},
+		sprites: [
+			{ file: "frames/kind_of.json"}
+		],
+		speech: [
+			{
+				file: "frames/bubble-28.json",
+				clip: new Audio("clips/cant_see_2.mp3"),
+				delay:1000
+			},
+			{
+				file: "frames/bubble-27.json",
+				clip: new Audio("clips/you_cant.mp3"),
+				delay: 6000
+			},
+			{
+				file: "frames/bubble-28.json",
+				clip: new Audio("clips/kind_of.mp3"),
+				delay:9000
+			},
+			{
+				file: "frames/bubble-27.json",
+				clip: new Audio("clips/hasnt_woke_me.mp3"),
+				delay: 12000,
+				nextScene: 17,
+				nextDelay: 1000
+			}
+
+		]
+	},
 ];
 
 
@@ -383,11 +634,13 @@ function start() {
 			if (sprite.debug) sprite.sprite.debug = true;
 			if (sprite.bkg) sprite.sprite.bkg = true;
 			if (sprite.file) sprite.sprite.addAnimation(sprite.file);
+			if (sprite.loop != undefined) sprite.sprite.animation.loop = sprite.loop;
 		});
 		if (scene.speech) {
 			scene.speech.forEach(function(speech) {
 				speech.played = false;
-				speech.sprite = new Sprite(speech.x, speech.y);
+				if (speech.x == undefined) speech.sprite = new Sprite(0, 0, width, height);
+				else speech.sprite = new Sprite(speech.x, speech.y);
 				if (speech.debug) speech.sprite.debug = true;
 				speech.sprite.addAnimation(speech.file);
 				speech.sprite.animation.play = false;
@@ -546,8 +799,11 @@ function mouseMoved(x, y) {
 			}
 		}
 	} else if (currentScene == 4) {
-		let j = Math.floor(map(y,0,height,0,10));
+		let j = Math.floor(map(y,0,height,1,10));
 		scenes[currentScene].sprites[0].sprite.animation.jiggle = j;
+	} else if (currentScene == 11) {
+		let j = Math.floor(map(y,0,height,1,10));
+		scenes[currentScene].sprites[1].sprite.animation.jiggle = j;
 	}
 
 	// let j = Math.floor(map(y,0,height,1,10));
